@@ -1,0 +1,205 @@
+#!/usr/bin/env bash
+
+
+#==========================================================================
+# Helpers
+#==========================================================================
+
+
+# Takes any argument and writes it to stdout as a banner (delimitted by two
+# vertical lines consisting of "=" and "#" chars).
+function banner () {
+  printf "\n\n#==========================================================================\n";
+  printf "# %s\n" "$1";
+  printf "#==========================================================================\n\n";
+}
+
+
+# Quasi `curl' alias.
+#
+# Takes a variable list of arguments and passes them to `curl'. Returns
+# whatever `cur' returns.
+#
+# Using an actual `alias' definition in a script will not work and is
+# regarded frequentyl a bad practise in general.
+#
+# Example:
+#   curlcommand -I -s http://httpbin.org/headers
+function curlcommand () {
+  # printf "%s\n" "$@";
+  curl "$@"
+}
+
+
+#==========================================================================
+# `httpbin' test
+#==========================================================================
+
+# This page.
+banner "\`httpbin' website";
+printf "Command:\n\n  curl http://httpbin.org/\n\nOutput:\n\n"
+curlcommand http://httpbin.org/
+
+
+# Returns Origin IP.
+banner "Origin IP";
+printf "Command:\n\n  curl http://httpbin.org/ip\n\nOutput:\n\n"
+curlcommand http://httpbin.org/ip
+
+
+# Returns user-agent.
+banner "User-agent";
+printf "Command:\n\n  curl http://httpbin.org/user-agent\n\nOutput:\n\n"
+curlcommand http://httpbin.org/user-agent
+
+
+# Returns header dict.
+banner "Header dict";
+printf "Command:\n\n  curl -I http://httpbin.org/headers\n\nOutput:\n\n"
+curlcommand -I http://httpbin.org/headers
+
+
+# # Returns GET data.
+# banner "GET data";
+# printf "Command:\n\n  curl http://httpbin.org/get\n\nOutput:\n\n"
+#  curl http://httpbin.org/get
+
+
+# # Returns POST data.
+# banner "POST data";
+# printf "Command:\n\n  curl http://httpbin.org/post\n\nOutput:\n\n"
+#  curl http://httpbin.org/post
+
+
+# # Returns PUT data.
+# banner "PUT data";
+# printf "Command:\n\n  curl http://httpbin.org/put\n\nOutput:\n\n"
+#  curl http://httpbin.org/put
+
+
+# # Returns PATCH data.
+# banner "PATCH data";
+# printf "Command:\n\n  curl http://httpbin.org/patch\n\nOutput:\n\n"
+#  curl http://httpbin.org/patch
+
+
+# # Returns DELETE data
+# banner "DELETE data";
+# printf "Command:\n\n  curl http://httpbin.org/delete\n\nOutput:\n\n"
+#  curl http://httpbin.org/delete
+
+
+# # Returns gzip-encoded data.
+# banner "gzip-encoded data";
+# printf "Command:\n\n  curl http://httpbin.org/gzip\n\nOutput:\n\n"
+#  curl http://httpbin.org/gzip
+
+
+banner "HTTP Status code";
+# Returns given HTTP Status code.
+printf "404:\n"
+printf "Command:\n\n  curl -I http://httpbin.org/status/404\n\nOutput:\n\n"
+curlcommand -I http://httpbin.org/status/404
+printf "500:\n"
+printf "Command:\n\n  curl -I http://httpbin.org/status/500\n\nOutput:\n\n"
+curlcommand -I http://httpbin.org/status/500
+printf "417:\n"
+printf "Command:\n\n  curl -I http://httpbin.org/status/417\n\nOutput:\n\n"
+curlcommand -I http://httpbin.org/status/417
+
+
+# Returns given response headers.
+banner "response headers";
+printf "Command:\n\n  curl -I http://httpbin.org/response-headers?a=b&c=d\n\nOutput:\n\n"
+curlcommand -I http://httpbin.org/response-headers?a=b&c=d
+
+
+# 302 Redirects n times.
+banner "302 redirects (n times)";
+printf "Command:\n\n  curl http://httpbin.org/redirect/3\n\nOutput:\n\n"
+curlcommand http://httpbin.org/redirect/3
+
+
+# 302 Redirects to the foo URL.
+banner "302 redirects (to the foo URL)";
+printf "Command:\n\n  curl http://httpbin.org/redirect-to?url=http://:www.example.com\n\nOutput:\n\n"
+curlcommand http://httpbin.org/redirect-to?url=http://:www.example.com
+
+
+# 302 Relative redirects n times.
+banner "302 relative redirects (n times)";
+printf "Command:\n\n  curl http://httpbin.org/relative-redirect/3\n\nOutput:\n\n"
+curlcommand http://httpbin.org/relative-redirect/3
+
+
+# Returns cookie data.
+banner "Cookie data";
+printf "Command:\n\n  curl http://httpbin.org/cookies\n\nOutput:\n\n"
+curlcommand http://httpbin.org/cookies
+
+
+# Sets one or more simple cookies.
+banner "Set one or more simple cookies";
+printf "Command:\n\n  curl http://httpbin.org/cookies/set?one=ONE&two=TWO&three=THREE\n\nOutput:\n\n"
+curlcommand http://httpbin.org/cookies/set?one=ONE&two=TWO&three=THREE
+
+
+# Deletes one or more simple cookies.
+banner "Delete one or more simple cookies";
+printf "Command:\n\n  curl http://httpbin.org/cookies/delete?three\n\nOutput:\n\n"
+curlcommand http://httpbin.org/cookies/delete?three
+
+
+# # Challenges HTTPBasic Auth.
+# banner "Challenge HTTPBasic Auth";
+# printf "Command:\n\n  curl http://httpbin.org/basic-auth/:user/:passwd\n\nOutput:\n\n"
+#  curl http://httpbin.org/basic-auth/:user/:passwd
+
+
+# # 404'd BasicAuth.
+# banner "404'd BasicAuth";
+# printf "Command:\n\n  curl http://httpbin.org/hidden-basic-auth/:user/:passwd\n\nOutput:\n\n"
+#  curl http://httpbin.org/hidden-basic-auth/:user/:passwd
+
+
+# # Challenges HTTP Digest Auth.
+# banner "Challenges HTTP Digest Auth";
+# printf "Command:\n\n  curl http://httpbin.org/digest-auth/:qop/:user/:passwd\n\nOutput:\n\n"
+#  curl http://httpbin.org/digest-auth/:qop/:user/:passwd
+
+
+# Streams n–100 lines.
+banner "Stream (n–100 lines)";
+printf "Command:\n\n  curl http://httpbin.org/stream/10\n\nOutput:\n\n"
+curlcommand http://httpbin.org/stream/10
+
+
+# Delays responding for n–10 seconds.
+banner "Delay responding (for n–10 seconds)";
+printf "Command:\n\n  curl http://httpbin.org/delay/4\n\nOutput:\n\n"
+curlcommand http://httpbin.org/delay/4
+
+
+# Renders a HTML Page.
+banner "Render a HTML page";
+printf "Command:\n\n  curl http://httpbin.org/html\n\nOutput:\n\n"
+curlcommand http://httpbin.org/html
+
+
+# Returns some robots.txt rules.
+banner "Return some robots.txt rules";
+printf "Command:\n\n  curl http://httpbin.org/robots.txt\n\nOutput:\n\n"
+curlcommand http://httpbin.org/robots.txt
+
+
+# Denied by robots.txt file.
+banner "Denied by robots.txt file";
+printf "Command:\n\n   curl http://httpbin.org/deny\n\nOutput:\n\n"
+curlcommand http://httpbin.org/deny
+
+
+# Returns 200 unless an If-Modified-Since header is provided, when it
+# returns a 304 Not Modified.
+banner "Returns 200 (unless an If-Modified-Since header is provided)";
+printf "Command:\n\n  curl http://httpbin.org/cache\n\nOutput:\n\n"
+curlcommand http://httpbin.org/cache
